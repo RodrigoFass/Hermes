@@ -48,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         highlightNavLinks();
     };
 
+    // Declared before handleScroll() first runs: calling it earlier hit the TDZ of
+    // these consts, threw a ReferenceError and aborted the rest of this handler.
+    const sections = document.querySelectorAll('section');
+    const navItems = document.querySelectorAll('.nav-links a');
+
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Init
 
@@ -74,8 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // === Scrollspy for Active Link in Navbar ===
-    const sections = document.querySelectorAll('section');
-    const navItems = document.querySelectorAll('.nav-links a');
 
     function highlightNavLinks() {
         let scrollY = window.pageYOffset;
