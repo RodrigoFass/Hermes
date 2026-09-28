@@ -346,6 +346,8 @@
                         <input type="hidden" name="redirect" value="https://hermescompany.marketing/obrigado.html">
                         <input type="hidden" name="subject" value="Novo Lead - Hermes Marketing">
                         <input type="hidden" name="from_name" value="Site Hermes">
+                        <!-- Honeypot anti-spam do Web3Forms: invisível para pessoas, bots marcam e o envio é descartado -->
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off" aria-hidden="true">
                         <div class="form-group">
                             <label for="name">Nome Completo</label>
                             <input type="text" id="name" name="nome" placeholder="Seu nome" required>
