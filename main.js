@@ -8,32 +8,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinksContainer = document.querySelector('.nav-links');
     const headerBtn = document.querySelector('.nav-actions .btn');
 
-    menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navbar.classList.toggle('menu-open');
+    const isMenuOpen = () => navbar.classList.contains('menu-open');
 
-        if (navbar.classList.contains('menu-open')) {
-            navLinksContainer.style.display = 'flex';
-            if (window.innerWidth <= 768) {
-                headerBtn.style.display = 'inline-flex';
-            }
-        } else {
-            navLinksContainer.style.display = '';
-            headerBtn.style.display = '';
+    function openMenu() {
+        menuToggle.classList.add('active');
+        navbar.classList.add('menu-open');
+        navLinksContainer.style.display = 'flex';
+        if (headerBtn && window.innerWidth <= 768) {
+            headerBtn.style.display = 'inline-flex';
         }
+        menuToggle.setAttribute('aria-expanded', 'true');
+        menuToggle.setAttribute('aria-label', 'Fechar menu');
+    }
+
+    function closeMenu() {
+        menuToggle.classList.remove('active');
+        navbar.classList.remove('menu-open');
+        navLinksContainer.style.display = '';
+        if (headerBtn) headerBtn.style.display = '';
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
+    }
+
+    menuToggle.addEventListener('click', () => {
+        if (isMenuOpen()) closeMenu();
+        else openMenu();
     });
 
     // Close mobile menu when a link is clicked
     const links = document.querySelectorAll('.nav-links a, .nav-actions a');
     links.forEach(link => {
         link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                menuToggle.classList.remove('active');
-                navbar.classList.remove('menu-open');
-                navLinksContainer.style.display = '';
-                headerBtn.style.display = '';
-            }
+            if (window.innerWidth <= 768) closeMenu();
         });
+    });
+
+    // Close mobile menu with Esc and return focus to the toggle button
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isMenuOpen()) {
+            closeMenu();
+            menuToggle.focus();
+        }
     });
 
     // === Navbar Scroll Effect ===
